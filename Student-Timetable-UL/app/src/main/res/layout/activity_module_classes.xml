@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/BlueGrey50"
+    tools:context="ie.ul.studenttimetableul.ModuleClassesActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/module_classes_listview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        </ListView>
+
+        <Button
+            android:id="@+id/add_class_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickAddClass"
+            android:text="@string/add_class" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

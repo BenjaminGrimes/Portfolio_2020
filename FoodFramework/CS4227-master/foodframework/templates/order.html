@@ -1,0 +1,298 @@
+{% extends "layout.html" %} {% block content %}
+<input type="hidden" id="total" value="0.00" />
+<script>
+  var cart = { cart_items: [] };
+  var cart_index = 0;
+</script>
+<div class="order-section">
+  <div class="grid-container">
+    {% for i in range(0, items|length) %}
+    <div class="card" style="width: 18rem; margin: 10px;">
+      <img src="../static/bagel_1.jpg" class="card-img-top" alt="..." />
+      <div class="card-body">
+        <h4 class="card-title">{{ items[i].name }}</h4>
+        <a href="#" id="price">€{{ items[i].price }}</a>
+        <p class="card-text">
+          {{ items[i].description }}
+        </p>
+        <button
+          class="btn btn-info"
+          data-toggle="modal"
+          data-target="#myModal{{ i }}"
+        >
+          Add
+        </button>
+      </div>
+    </div>
+    <div class="modal" id="myModal{{ i }}" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header"></div>
+          <div class="modal-body">
+            <p>Assortment of options</p>
+            {% for option in items[i].options %}
+            <article class="media content-section">
+              <div class="media-body">
+                <div class="">
+                  <a href="#">{{ option.name }}</a>
+                  <small class="article-title" href="#"
+                    >€{{ option.price }}</small
+                  >
+                  <a href="#">
+                    <input
+                      id="modal{{ i }}_option_checkbox_{{ loop.index }}"
+                      type="checkbox"
+                      value="{{ option.name }}"
+                    />
+                  </a>
+                </div>
+              </div>
+            </article>
+            {% endfor %}
+          </div>
+
+          <div class="modal-footer">
+            <button
+              id="close_button_{{ i }}"
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              id="add_button_{{ i }}"
+              type="button"
+              class="btn btn-secondary"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $(document).ready(function() {
+
+        {% if cart|length > 0 and i == 0 %}
+            {% for i in range(0, cart|length) %}
+              var total = 0.00;
+              cart_index = cart_index + 1;
+              var item_id = cart_index;
+              var item_name = {{ cart[i].name|tojson|safe }};
+              var item_price = {{ cart[i].price }};
+              var item_type = {{ cart[i].type|tojson|safe }};
+              var item = { id: item_id, name: item_name, price: item_price, type:item_type, options: [] };
+
+              {% for option in cart[i].options %}
+                total += {{ option.price }};
+                var option_name = {{ option.name|tojson|safe }};
+                var option_price = {{ option.price }};
+                item.options.push({ name: option_name, price: option_price });
+              {% endfor %}
+
+              cart.cart_items.push(JSON.stringify(item));
+              document.getElementById("cart").value = JSON.stringify(cart);
+
+              document.getElementById('total').value = total;
+              $('#order_total').text(total.toFixed(2));
+              displayOrder(item, cart_index);
+            {% endfor %}
+
+            {% set cart = [] %}
+          {% endif %}
+
+
+        $(function() {
+          $(document).on('hidden.bs.modal', '#myModal{{i}}', function() {
+              clearOptions();
+          });
+        });
+
+        $("#add_button_{{i}}").click(function() {
+          var total = parseInt(document.getElementById('total').value);
+          total += parseInt({{ items[i].price }});
+
+          cart_index = cart_index + 1;
+          var item_id = cart_index;
+          var item_name = {{ items[i].name|tojson|safe }};
+          var item_price = {{ items[i].price }};
+          var item_type = {{ items[i].type|tojson|safe }};
+          var item = {id: item_id, name: item_name, price: item_price, type: item_type, options: [] };
+
+          {% for option in items[i].options %}
+              if(document.getElementById('modal{{i}}_option_checkbox_{{loop.index}}').checked == true){
+                  total += {{ option.price }};
+                  var option_name = {{ option.name|tojson|safe }};
+                  var option_price = {{ option.price }};
+                  item.options.push({ name: option_name, price: option_price });
+              }
+          {% endfor %}
+
+          cart.cart_items.push(JSON.stringify(item));
+          document.getElementById("cart").value = JSON.stringify(cart);
+
+          var order_text = $('#order_details').text();
+          order_text += "-> €" + item.price + " : " + item.name + "<br>";
+          for (var i = 0; i < item.options.length; i++)
+          {
+            order_text += "-> €" + item.options[i].price + " : " + item.options[i].name + "<br>";
+          }
+          order_text += "<br>";
+
+          document.getElementById('total').value = total;
+          $('#order_total').text(total.toFixed(2));
+          document.getElementById('close_button_{{i}}').click();
+          displayOrder(item, cart_index);
+
+
+          $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "/save_cart_state",
+            data: $('#cart').val(),
+            success: function(data){
+              console.log("success");
+            }
+          });
+        });
+
+
+        function clearOptions(){
+          {% for option in items[i].options %}
+              document.getElementById('modal{{i}}_option_checkbox_{{loop.index}}').checked = false;
+          {% endfor %}
+        }
+
+
+        function displayOrder(item, index){
+          var node = document.createElement("LI");
+          node.setAttribute("id", "main_item_"+item.id);
+
+          var text_node = document.createTextNode(`${item.name} : € ${item.price}`);
+          node.appendChild(text_node);
+          node.setAttribute("class", "list-group-item list-group-item-info");
+          const close_button_inner = "<span class='close'>x</span>";
+
+          let close_button_span = document.createElement("SPAN");
+          close_button_span.setAttribute("id", "remove_btn_" + cart_index);
+          close_button_span.innerHTML = close_button_inner;
+          node.appendChild(close_button_span);
+
+          document.getElementById("order_list").appendChild(node);
+          var p_node = document.createElement("UL");
+          p_node.setAttribute("id", "cart_item_" + item.id);
+
+          for (var i = 0; i < item.options.length; i++)
+          {
+            var child_node = document.createElement("LI");
+            child_node.setAttribute("id", "option");
+            child_node.setAttribute("class", "list-group-item");
+            var text_node = document.createTextNode(`${item.options[i].name} : € ${item.options[i].price} ` );
+            child_node.appendChild(text_node);
+            p_node.appendChild(child_node);
+          }
+
+          $(close_button_span).click(function() {
+            // remove from cart
+            for (i = 0; i < cart.cart_items.length; i++){
+              var it = JSON.parse(cart.cart_items[i]);
+              if (it.id == index){
+                cart.cart_items.splice(i,1);
+
+                document.getElementById("cart").value = JSON.stringify(cart);
+                $('#cart_item_'+item.id).empty();
+                $("#main_item_"+item.id).remove();
+                $(this).remove();
+              }
+            }
+            calculateTotal();
+
+            $.ajax({
+              type: "POST",
+              contentType: "application/json; charset=utf-8",
+              url: "/save_cart_state",
+              data: $('#cart').val(),
+              success: function(data){
+                console.log("success");
+                calculateTotal();
+              }
+            });
+          });
+          document.getElementById("order_list").appendChild(p_node);
+          calculateTotal();
+        }
+
+
+        function calculateTotal(){
+          var total = 0.00;
+          for (i = 0; i < cart.cart_items.length; i++){
+            var it = JSON.parse(cart.cart_items[i]);
+            total = total + it.price;
+            for (j = 0; j < it.options.length; j++){
+              total = total + it.options[j].price;
+            }
+          }
+          document.getElementById('total').value = total;
+          $('#order_total').text(total.toFixed(2));
+        }
+      });
+    </script>
+    {% endfor %}
+  </div>
+
+  <div class="order-form-section card">
+    <img
+      class="card-img-top"
+      src="../static/order-card.jpg"
+      alt="Card image cap"
+    />
+    <form method="POST" id="order-form">
+      <input id="cart" type="hidden" />
+      <div class="order-summary">
+        <h3>
+          €
+          <span id="order_total" class="badge badge-secondary">0.00</span>
+        </h3>
+      </div>
+      <p id="order_details"></p>
+      <ul id="order_list" class="list-group list-group-flush"></ul>
+      <div class="order-form-buttons-section">
+        <input
+          id="clear_cart_btn"
+          type="button"
+          class="btn btn-outline-info"
+          value="Clear Cart"
+        />
+        <div class="divider"></div>
+        <input type="submit" class="btn btn-info" value="Checkout" />
+      </div>
+      <div class="order-form-buttons-section">
+        <input
+          id="cart_undo"
+          type="button"
+          class="btn btn-secondary"
+          value="undo"
+        />
+      </div>
+      <script
+        type="text/javascript"
+        src="{{ url_for('static', filename='cartUndo.js') }}"
+      ></script>
+      <script
+        type="text/javascript"
+        src="{{ url_for('static', filename='clearCart.js') }}"
+      ></script>
+    </form>
+  </div>
+</div>
+
+<br />
+<br />
+<br />
+
+<script
+  type="text/javascript"
+  src="{{ url_for('static', filename='orderFormSubmit.js') }}"
+></script>
+{% endblock content %}

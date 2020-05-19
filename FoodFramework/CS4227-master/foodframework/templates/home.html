@@ -1,0 +1,25 @@
+{% extends "layout.html" %} {% block content %}
+<article class="media-body">
+  <div class="media-body"></div>
+
+  <div class="jumbotron">
+    <h1 class="display-4">About Us</h1>
+    <p class="lead">We are located at {{ address }}.</p>
+    <hr class="my-4" />
+    <p class="text-dark">
+      {{ about_text }}
+    </p>
+    <footer>
+      <small
+        >Contact Information:
+        <a href="{{ contact_email }}">{{ contact_email }}</a></small
+      >
+    </footer>
+    <br />
+    <a class="btn btn-primary btn-lg" href="/order" role="button"
+      >Get Ordering</a
+    >
+  </div>
+
+  {% endblock content %}
+</article>

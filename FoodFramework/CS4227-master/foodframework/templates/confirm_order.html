@@ -1,0 +1,85 @@
+{% extends "layout.html" %} {% block content %}
+<div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Confirm Order</legend>
+            <h4>Order total: €{{ '%(amount).2f'|format(amount=amount/100) }}</h4>
+            <div class="form-group">
+                {{ form.first_name.label(class="form-control-label") }}
+                {% if form.first_name.errors %}
+                {{ form.first_name(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.first_name.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.first_name(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.last_name.label(class="form-control-label") }}
+                {% if form.last_name.errors %}
+                {{ form.last_name(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.last_name.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.last_name(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.phone_number.label(class="form-control-label") }}
+                {% if form.phone_number.errors %}
+                {{ form.phone_number(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.phone_number.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.phone_number(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            {% if confirmation_type == "DELIVERY" %}
+            <div class="form-group">
+                <label class="form-control-label">Address</label>
+                {% if form.address_line_1.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.address.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.address_line_1(class="form-control form-control-lg") }} <br>
+                {{ form.address_line_2(class="form-control form-control-lg") }} <br>
+                {{ form.address_line_3(class="form-control form-control-lg") }} <br>
+                {% endif %}
+            </div>
+            {% endif %}
+        </fieldset>
+        {% if payment == "cash" %}
+        <div class="form-check">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+        {% endif %}
+    </form>
+    {% if payment == "card" %}
+    <form action="/card-payment" method="POST">
+        <input type="hidden" name="amount" value="{{ amount }}"/>
+        <script
+                src="https://checkout.stripe.com/checkout.js"
+                class="stripe-button"
+                data-key="{{ key }}"
+                data-description="Order Payment"
+                data-amount="{{ amount }}"
+                data-locale="auto"
+                data-currency="eur"
+        ></script>
+    </form>
+    {% endif %}
+</div>
+{% endblock content %}

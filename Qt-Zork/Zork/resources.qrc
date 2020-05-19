@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="restart.png">images/RestartIcon.png</file>
+        <file alias="exit.png">images/ExitIcon.png</file>
+        <file alias="ZORK_TITLE.png">images/ZORK_TITLE.png</file>
+        <file alias="ZORK_APP_ICON.png">images/AppIcon.png</file>
+        <file alias="ZORK_MAP.png">images/ZORK_MAP.png</file>
+    </qresource>
+</RCC>

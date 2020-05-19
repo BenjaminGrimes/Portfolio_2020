@@ -1,0 +1,253 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ie.ul.studenttimetableul.Timetable">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:id="@+id/llDays"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvBlank"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/Grey300" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/GridColor"/>
+
+            <TextView
+                android:id="@+id/tvMon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@color/Grey300"
+                android:layout_weight="1"
+                android:text="Mon" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/GridColor"/>
+
+            <TextView
+                android:id="@+id/tvTue"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@color/Grey300"
+                android:layout_weight="1"
+                android:text="Tue"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/GridColor"/>
+
+            <TextView
+                android:id="@+id/tvWed"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@color/Grey300"
+                android:layout_weight="1"
+                android:text="Wed" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/GridColor"/>
+
+            <TextView
+                android:id="@+id/tvThu"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@color/Grey300"
+                android:layout_weight="1"
+                android:text="Thu" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/GridColor"/>
+
+            <TextView
+                android:id="@+id/tvFri"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@color/Grey300"
+                android:layout_weight="1"
+                android:text="Fri" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/GridColor"/>
+
+            <TextView
+                android:id="@+id/tvSat"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@color/Grey300"
+                android:layout_weight="1"
+                android:text="Sat" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/GridColor"/>
+
+            <TextView
+                android:id="@+id/tvSun"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@color/Grey300"
+                android:layout_weight="1"
+                android:text="Sun" />
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/BlueGrey50"
+            android:layout_below="@+id/llDays">
+
+
+            <LinearLayout
+                android:id="@+id/llL"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:background="@android:color/transparent">
+
+
+                <LinearLayout
+                    android:id="@+id/llTimes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:background="@color/Grey300">
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/GridColor" />
+
+
+                <LinearLayout
+                    android:id="@+id/llMon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/GridColor" />
+
+                <LinearLayout
+                    android:id="@+id/llTue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/GridColor" />
+
+
+                <LinearLayout
+                    android:id="@+id/llWed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/GridColor" />
+
+                <LinearLayout
+                    android:id="@+id/llThu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/GridColor" />
+
+                <LinearLayout
+                    android:id="@+id/llFri"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/GridColor" />
+
+                <LinearLayout
+                    android:id="@+id/llSat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/GridColor" />
+
+                <LinearLayout
+                    android:id="@+id/llSun"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </RelativeLayout>
+    
+</FrameLayout>

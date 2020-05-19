@@ -1,0 +1,14 @@
+Flask
+flask-wtf
+flask-sqlalchemy
+flask-migrate
+stripe
+Flask-Admin
+flask-bcrypt
+flask-login
+flask-security
+jsonpickle
+phonenumbers
+manage
+Flask-Testing
+pytest

@@ -1,0 +1,63 @@
+{% extends "layout.html" %} {% block content %}
+<div>
+  <main role="main" class="container">
+    <h2>Order details are as follows:</h2>
+    <div class="grid-container">
+        {% for item in items %}
+        <div class="card" style="width: 18rem; margin: 10px;">
+          <img src="../static/bagel_1.jpg" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h4 class="card-title">{{ item.name }}</h4>
+            <a href="#" id="price">€{{ item.price }}</a>
+            {% if item.options|length >= 1 %}
+              {% for option in item.options %}
+              <ul id="order_list" class="list-group list-group-flush">
+                  <li class="list-group-item">{{ option.name }} - € {{ option.price }}</li>
+              </ul>
+              {% endfor %}
+            {% endif %}
+            <p href="#" id="allergen">Allergen: {{ item.allergen.allergen_desc }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+      <div>
+        <form action="/checkout" method="POST">
+          <br>
+          <h4>Please select your method of payment:</h4>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <input type="radio" name="payment" value="card" required />
+                Card
+              </div>
+              <div class="input-group-text">
+                <input type="radio" name="payment" value="cash" required />
+                Cash
+              </div>
+            </div>
+          </div>
+          <br />
+          <h4>Please select delivery or collection:</h4>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <input type="radio" name="type" value="delivery" required />
+                Delivery
+              </div>
+              <div class="input-group-text">
+                <input type="radio" name="type" value="collection" required />
+                Collection
+              </div>
+            </div>
+          </div>
+          <br />
+          <br />
+          <input type="submit" name="submitPayment" class="btn btn-primary" />
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}
